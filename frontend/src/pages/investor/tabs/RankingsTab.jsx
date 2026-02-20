@@ -13,6 +13,10 @@ const RankingsTab = () => {
             .finally(() => setLoading(false));
     }, []);
 
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading rankings...</div>;
+    }
+
     return (
         <div className="p-6 max-w-4xl mx-auto">
             <div className="text-center mb-8">

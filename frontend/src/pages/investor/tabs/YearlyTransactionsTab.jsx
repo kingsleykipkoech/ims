@@ -17,6 +17,10 @@ const YearlyTransactionsTab = () => {
             .finally(() => setLoading(false));
     }, []);
 
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading transactions...</div>;
+    }
+
     return (
         <div className="p-6">
             <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
@@ -57,8 +61,8 @@ const YearlyTransactionsTab = () => {
                                     </td>
                                     <td className="px-6 py-4 text-center">
                                         <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${row.status === 'approved' ? 'bg-green-100 text-green-700' :
-                                                row.status === 'rejected' ? 'bg-red-100 text-red-700' :
-                                                    'bg-yellow-100 text-yellow-700'
+                                            row.status === 'rejected' ? 'bg-red-100 text-red-700' :
+                                                'bg-yellow-100 text-yellow-700'
                                             }`}>
                                             {row.status}
                                         </span>

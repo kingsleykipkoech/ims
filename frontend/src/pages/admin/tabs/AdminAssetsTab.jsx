@@ -19,16 +19,16 @@ const AdminAssetsTab = () => {
         document: null // file object
     });
 
-    useEffect(() => {
-        fetchAssets();
-    }, []);
-
     const fetchAssets = () => {
         apiClient.get('/assets')
             .then(res => setAssets(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
+
+    useEffect(() => {
+        fetchAssets();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -80,8 +80,7 @@ const AdminAssetsTab = () => {
             }
             setIsModalOpen(false);
             fetchAssets();
-        } catch (err) {
-            console.error(err);
+        } catch {
             Swal.fire('Error', 'Operation failed', 'error');
         }
     };
@@ -92,10 +91,14 @@ const AdminAssetsTab = () => {
             setAssets(assets.filter(a => a._id !== deleteModal.id));
             setDeleteModal({ open: false, id: null, name: '' });
             Swal.fire('Deleted!', 'Asset has been removed.', 'success');
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to delete asset', 'error');
         }
     };
+
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading assets...</div>;
+    }
 
     return (
         <div className="p-6">

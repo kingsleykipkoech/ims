@@ -8,16 +8,16 @@ const TransactionsTab = () => {
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
 
-    useEffect(() => {
-        fetchTransactions();
-    }, []);
-
     const fetchTransactions = () => {
         apiClient.get('/admin/transactions')
             .then(res => setTransactions(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
+
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
 
     const handleApproval = async (id, status) => {
         try {
@@ -46,6 +46,8 @@ const TransactionsTab = () => {
                 showConfirmButton: false
             });
         } catch (err) {
+            console.error(err);
+
             Swal.fire('Error', 'Failed to update transaction', 'error');
         }
     };
@@ -54,6 +56,10 @@ const TransactionsTab = () => {
         if (filter === 'all') return true;
         return t.status === filter;
     });
+
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading transactions...</div>;
+    }
 
     return (
         <div className="p-6">
@@ -110,8 +116,8 @@ const TransactionsTab = () => {
                                     </td>
                                     <td className="px-6 py-4 text-center">
                                         <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${tx.status === 'approved' ? 'bg-green-100 text-green-700' :
-                                                tx.status === 'rejected' ? 'bg-red-100 text-red-700' :
-                                                    'bg-yellow-100 text-yellow-700'
+                                            tx.status === 'rejected' ? 'bg-red-100 text-red-700' :
+                                                'bg-yellow-100 text-yellow-700'
                                             }`}>
                                             {tx.status}
                                         </span>

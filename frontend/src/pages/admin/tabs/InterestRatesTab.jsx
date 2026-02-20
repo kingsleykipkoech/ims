@@ -12,16 +12,16 @@ const InterestRatesTab = () => {
         effective_date: ''
     });
 
-    useEffect(() => {
-        fetchRates();
-    }, []);
-
     const fetchRates = () => {
         apiClient.get('/interest-rates')
             .then(res => setRates(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
+
+    useEffect(() => {
+        fetchRates();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,10 +30,14 @@ const InterestRatesTab = () => {
             Swal.fire('Success', 'Interest Rate configured', 'success');
             setFormData({ rate_percentage: '', category: '', effective_date: '' });
             fetchRates();
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to add interest rate', 'error');
         }
     };
+
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading rates...</div>;
+    }
 
     return (
         <div className="p-6 grid lg:grid-cols-3 gap-6">

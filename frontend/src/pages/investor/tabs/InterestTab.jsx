@@ -16,6 +16,10 @@ const InterestTab = () => {
 
     const totalInterest = interests.reduce((sum, i) => sum + i.amount, 0);
 
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading interest data...</div>;
+    }
+
     const chartData = interests.map(i => ({
         date: new Date(i.date).toLocaleDateString(),
         amount: i.amount

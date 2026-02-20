@@ -13,16 +13,16 @@ const ExpensesTab = () => {
         date: new Date().toISOString().split('T')[0]
     });
 
-    useEffect(() => {
-        fetchExpenses();
-    }, []);
-
     const fetchExpenses = () => {
         apiClient.get('/expenses')
             .then(res => setExpenses(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
+
+    useEffect(() => {
+        fetchExpenses();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,10 +36,14 @@ const ExpensesTab = () => {
                 date: new Date().toISOString().split('T')[0]
             });
             fetchExpenses();
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to record expense', 'error');
         }
     };
+
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading expenses...</div>;
+    }
 
     return (
         <div className="p-6 grid lg:grid-cols-3 gap-6">

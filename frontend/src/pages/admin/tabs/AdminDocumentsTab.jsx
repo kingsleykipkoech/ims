@@ -45,7 +45,7 @@ const AdminDocumentsTab = () => {
             Swal.fire('Success', 'Document uploaded successfully', 'success');
             setUploadData({ asset_id: '', file: null });
             fetchDocuments();
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Upload failed', 'error');
         } finally {
             setLoading(false);

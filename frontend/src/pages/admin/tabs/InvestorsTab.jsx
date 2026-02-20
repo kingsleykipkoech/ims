@@ -9,16 +9,16 @@ const InvestorsTab = () => {
     const [loading, setLoading] = useState(true);
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null, name: '' });
 
-    useEffect(() => {
-        fetchInvestors();
-    }, []);
-
     const fetchInvestors = () => {
         apiClient.get('/admin/investors')
             .then(res => setInvestors(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
+
+    useEffect(() => {
+        fetchInvestors();
+    }, []);
 
     const handleStatusChange = async (id, newStatus) => {
         try {
@@ -31,7 +31,7 @@ const InvestorsTab = () => {
                 timer: 1500,
                 showConfirmButton: false
             });
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to update status', 'error');
         }
     };
@@ -42,10 +42,14 @@ const InvestorsTab = () => {
             setInvestors(investors.filter(i => i._id !== deleteModal.id));
             setDeleteModal({ open: false, id: null, name: '' });
             Swal.fire('Deleted!', 'Investor account has been deleted.', 'success');
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to delete investor', 'error');
         }
     };
+
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading investors...</div>;
+    }
 
     return (
         <div className="p-6">
@@ -72,8 +76,8 @@ const InvestorsTab = () => {
                                     <td className="px-6 py-4 text-slate-600">{inv.email}</td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-1 rounded-full text-xs font-bold capitalize ${inv.status === 'active' ? 'bg-green-100 text-green-700' :
-                                                inv.status === 'suspended' ? 'bg-orange-100 text-orange-700' :
-                                                    'bg-red-100 text-red-700'
+                                            inv.status === 'suspended' ? 'bg-orange-100 text-orange-700' :
+                                                'bg-red-100 text-red-700'
                                             }`}>
                                             {inv.status}
                                         </span>

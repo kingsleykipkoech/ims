@@ -12,11 +12,6 @@ const PenaltiesTab = () => {
         reason: ''
     });
 
-    useEffect(() => {
-        fetchPenalties();
-        fetchInvestors();
-    }, []);
-
     const fetchPenalties = () => {
         apiClient.get('/penalties')
             .then(res => setPenalties(res.data))
@@ -29,6 +24,11 @@ const PenaltiesTab = () => {
             .catch(err => console.error(err));
     };
 
+    useEffect(() => {
+        fetchPenalties();
+        fetchInvestors();
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -36,7 +36,7 @@ const PenaltiesTab = () => {
             Swal.fire('Success', 'Penalty applied successfully', 'success');
             setFormData({ investor_id: '', amount: '', reason: '' });
             fetchPenalties();
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to apply penalty', 'error');
         }
     };

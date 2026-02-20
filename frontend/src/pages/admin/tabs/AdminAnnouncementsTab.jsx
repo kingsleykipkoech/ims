@@ -11,15 +11,15 @@ const AdminAnnouncementsTab = () => {
         priority: 'normal'
     });
 
-    useEffect(() => {
-        fetchAnnouncements();
-    }, []);
-
     const fetchAnnouncements = () => {
         apiClient.get('/admin/announcements')
             .then(res => setAnnouncements(res.data))
             .catch(err => console.error(err));
     };
+
+    useEffect(() => {
+        fetchAnnouncements();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +28,7 @@ const AdminAnnouncementsTab = () => {
             Swal.fire('Success', 'Announcement published', 'success');
             setFormData({ title: '', content: '', priority: 'normal' });
             fetchAnnouncements();
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to publish announcement', 'error');
         }
     };
@@ -38,7 +38,7 @@ const AdminAnnouncementsTab = () => {
             await apiClient.delete(`/admin/announcements/${id}`);
             setAnnouncements(announcements.filter(a => a._id !== id));
             Swal.fire('Deleted', 'Announcement removed', 'success');
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to delete', 'error');
         }
     };

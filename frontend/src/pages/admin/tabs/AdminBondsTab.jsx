@@ -18,16 +18,16 @@ const AdminBondsTab = () => {
         maturity_date: ''
     });
 
-    useEffect(() => {
-        fetchBonds();
-    }, []);
-
     const fetchBonds = () => {
         apiClient.get('/bonds')
             .then(res => setBonds(res.data))
             .catch(err => console.error(err))
             .finally(() => setLoading(false));
     };
+
+    useEffect(() => {
+        fetchBonds();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -42,7 +42,7 @@ const AdminBondsTab = () => {
             setIsModalOpen(false);
             setFormData({ name: '', description: '', interest_rate: '', term: '', maturity_date: '' });
             fetchBonds();
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to create bond', 'error');
         }
     };
@@ -53,10 +53,14 @@ const AdminBondsTab = () => {
             setBonds(bonds.filter(b => b._id !== deleteModal.id));
             setDeleteModal({ open: false, id: null, name: '' });
             Swal.fire('Deleted', 'Bond removed', 'success');
-        } catch (err) {
+        } catch {
             Swal.fire('Error', 'Failed to delete bond', 'error');
         }
     };
+
+    if (loading) {
+        return <div className="p-10 text-center text-slate-500">Loading bonds...</div>;
+    }
 
     return (
         <div className="p-6">

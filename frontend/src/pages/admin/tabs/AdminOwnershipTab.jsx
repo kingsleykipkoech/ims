@@ -18,23 +18,22 @@ const AdminOwnershipTab = () => {
     });
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [ownRes, assetsRes, invRes] = await Promise.all([
+                    apiClient.get('/admin/asset-ownership'),
+                    apiClient.get('/assets'),
+                    apiClient.get('/admin/investors')
+                ]);
+                setOwnerships(ownRes.data);
+                setAssets(assetsRes.data);
+                setInvestors(invRes.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
         fetchData();
     }, []);
-
-    const fetchData = async () => {
-        try {
-            const [ownRes, assetsRes, invRes] = await Promise.all([
-                apiClient.get('/admin/asset-ownership'),
-                apiClient.get('/assets'),
-                apiClient.get('/admin/investors')
-            ]);
-            setOwnerships(ownRes.data);
-            setAssets(assetsRes.data);
-            setInvestors(invRes.data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
 
     const handleAssign = async (e) => {
         e.preventDefault();
@@ -42,8 +41,8 @@ const AdminOwnershipTab = () => {
             await apiClient.post('/admin/asset-ownership', formData);
             Swal.fire('Success', 'Ownership assigned', 'success');
             setFormData({ investor_id: '', asset_id: '', percentage_share: '' });
-            fetchData();
-        } catch (err) {
+            window.location.reload();
+        } catch {
             Swal.fire('Error', 'Assignment failed', 'error');
         }
     };

@@ -12,7 +12,7 @@ const AssetsTab = () => {
             try {
                 const res = await apiClient.get('/assets');
                 setAssets(res.data);
-            } catch (err) {
+            } catch {
                 console.error('Failed to fetch assets');
             } finally {
                 setLoading(false);

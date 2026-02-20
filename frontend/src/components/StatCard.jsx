@@ -1,6 +1,7 @@
 import React from 'react';
 
-const StatCard = ({ title, value, icon: Icon, colorClass = "bg-blue-500", trend, trendUp }) => {
+const StatCard = ({ title, value, icon, colorClass = "bg-blue-500", trend, trendUp }) => {
+    const Icon = icon;
     return (
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex items-start justify-between">
             <div>
