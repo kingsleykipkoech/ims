@@ -12,7 +12,7 @@ const investorSchema = new mongoose.Schema({
     created_at: { type: Date, default: Date.now },
 });
 
-investorSchema.index({ email: 1 });
+
 investorSchema.index({ status: 1 });
 
 const Investor = mongoose.model('Investor', investorSchema);
